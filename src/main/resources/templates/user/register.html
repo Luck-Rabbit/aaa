@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>登录</title>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .container {
+            width: 900px;
+            height: 450px;
+            margin-top: 50px;
+            background: rgb(178, 200, 187,0.30);
+            border-radius: 30px;
+        }
+        .form {
+            padding: 75px 150px;
+        }
+        #iRefresh:hover{
+            color: deepskyblue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-center">
+<div th:replace="~{commons/bar::topbar}"></div>
+<div class="container">
+    <form class="form" th:action="@{/user/register}" method="post" onsubmit="return verify()">
+        <div class="row">
+            <div class="col-lg-12">
+                <input id="strUserAlias" maxlength="11" class="form-control" name="strUserAlias" type="text" placeholder="昵称" required="" autofocus="" /><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <input onKeyUp="pwStrength(this.value)" maxlength="19" onBlur="pwStrength(this.value)" id="strUserPassword" class="form-control" name="strUserPassword" type="password" placeholder="密码(6-19字符组成，区分大小写)" required="" /><br>
+            </div>
+        </div>
+        <div class="progress">
+            <div id="passwordProgressBar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+                <span class="sr-only">45% Complete (success)</span>
+            </div>
+        </div>
+        <div class="row">
+            <div  class="col-lg-12">
+                <div id="passwordDanger" class="input-group">
+                    <div class="input-group-btn">
+                        <button id="btn1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">手机 <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a onclick="isMe('手机')">手机</a>
+                            </li>
+                            <li>
+                                <a onclick="isMe('邮箱')">邮箱</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <input id="strUserTelephoneOrEmail" name="strUserTelephoneOrEmail" maxlength="11"  onKeyUp="telephoneOrEmailValid(this.value)" onBlur="telephoneOrEmailValid(this.value)" type="text" placeholder="填写常用手机号" required="" class="form-control" pattern="^\d{11}$">
+                </div>
+                <span id="helpBlock2" class="help-block" style="color: red"></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <input id="strCode" name="strCode" type="text" maxlength="6" pattern="^\d{6}$" placeholder="请输入短信验证码" class="form-control">
+                    <span class="input-group-btn">
+<!--        						<button id="linkSendMessage"  onclick="sendMessage()" class="btn btn-default" type="button">发送验证码</button>-->
+        						<button id="linkSendMessage" onclick="openKaptchar()" class="btn btn-default" type="button">发送验证码</button>
+      						</span>
+                </div>
+            </div>
+        </div>
+        <button style="margin: 20px 40%;" type="submit" class="col-lg-3 btn btn-info">注册</button>
+    </form>
+    <div id="kaptchaDiv" style="display:none;position:fixed;background-color: white;width:300px;height: 160px;right: 40%;top:40%;z-index: 100;padding: 15px 20px;">
+        <img id="imgKaptcha" name="imgKaptcha" alt="验证码"  src="defaultKaptcha" style="margin-bottom: 10px;">
+        <input id="strKaptcha" style="" maxlength="4" class="form-control" name="strKaptcha" type="text" placeholder="输入验证码" required="" autofocus="" />
+        <div style="margin-top: 10px">
+            <i id="iRefresh" onclick="changeKaptcha()" class="fa fa-refresh fa-lg" style="float: left;margin-top: 10px;"></i>
+            <button onclick="sendMessage()" id="sendMessage" class="btn btn-info" style="float: right;width: 100px">确定</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    var phoneOrEmailValid = false;
+    function changeKaptcha(){
+        $("#imgKaptcha").attr("src","defaultKaptcha?d="+new Date()*1);
+    };
+
+    function openKaptchar(){
+        $kaptchaDiv = $("#kaptchaDiv");
+        var emailOrPhone = $('input[name="strUserTelephoneOrEmail"]').val();
+        var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        var reg1 = /^\d{11}$/;
+        if(!reg.test(emailOrPhone) && !reg1.test(emailOrPhone)){
+            alert("请确认电话或邮件的合法性");
+        }else if(!phoneOrEmailValid){
+            alert("此账号已注册");
+        }else{
+            $kaptchaDiv.toggle(500);
+        }
+    }
+    $(document).on({
+        "click": function(e){
+            $kaptchaDiv = $("#kaptchaDiv");
+            var src = e.target;
+            if(src.id && (src.id ==="kaptchaDiv" || src.id ==="sendMessage" || src.id ==="iRefresh" || src.id === "imgKaptcha"
+                || src.id === "linkSendMessage" || src.id === "strKaptcha") ){
+                return false;
+            }else{
+                $kaptchaDiv.hide(500);
+            }
+        }
+    });
+
+
+    function isMe(name) {
+        document.getElementById("btn1").innerText = name;
+        if (name == "手机") {
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("placeholder", "填写常用手机号");
+            document.getElementById("strCode").setAttribute("placeholder", "请输入短信验证码");
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("pattern", '^\\d{11}$');
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("maxlength", '11');
+        } else if (name == "邮箱") {
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("placeholder", "填写常用邮箱号");
+            document.getElementById("strCode").setAttribute("placeholder", "请输入邮箱验证码");
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("pattern", '^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$');
+            document.getElementById("strUserTelephoneOrEmail").setAttribute("maxlength", '30');
+        }
+    }
+
+    //CharMode函数
+    //测试某个字符是属于哪一类.
+    function CharMode(iN) {
+        if (iN >= 48 && iN <= 57) //数字
+            return 1;
+        if (iN >= 65 && iN <= 90) //大写字母
+            return 2;
+        if (iN >= 97 && iN <= 122) //小写
+            return 4;
+        else
+            return 8; //特殊字符
+    }
+
+    //bitTotal函数
+    //计算出当前密码当中一共有多少种模式
+    function bitTotal(num) {
+        modes = 0;
+        num >>>= 1;
+        for (i = 0; i < 4; i++) {
+            if (num & 1) modes++;
+            num >>>= 1;
+        }
+        return modes;
+    }
+
+    //checkStrong函数
+    //返回密码的强度级别
+    function checkStrong(sPW) {
+        if (sPW.length <= 4)
+            return 0; //密码太短
+        Modes = 0;
+        for (i = 0; i < sPW.length; i++) {
+            //测试每一个字符的类别并统计一共有多少种模式.
+            Modes |= CharMode(sPW.charCodeAt(i));
+        }
+        return bitTotal(Modes);
+    }
+
+    //当用户放开键盘或密码输入框失去焦点时,根据不同的级别显示不同的颜色
+    function pwStrength(pwd) {
+        var passwordProgressBar = document.getElementById("passwordProgressBar");
+        if (pwd == null || pwd == '') {
+
+        } else {
+            //排除样式
+            if ($("#passwordProgressBar").hasClass("progress-bar-info")) {
+                $("#passwordProgressBar").removeClass("progress-bar-info");
+            }
+            if ($("#passwordProgressBar").hasClass("progress-bar-warning")) {
+                $("#passwordProgressBar").removeClass("progress-bar-warning");
+            }
+            if ($("#passwordProgressBar").hasClass("progress-bar-success")) {
+                $("#passwordProgressBar").removeClass("progress-bar-success");
+            }
+            if ($("#passwordProgressBar").hasClass("progress-bar-danger")) {
+                $("#passwordProgressBar").removeClass("progress-bar-danger");
+            }
+            //判断密码等级
+            S_level = checkStrong(pwd);
+            switch (S_level) {
+                case 0:
+                    $("#passwordProgressBar").addClass("progress-bar-danger");
+                    $("#passwordProgressBar").css("width", "25%");
+                    break;
+                case 1:
+                    $("#passwordProgressBar").addClass("progress-bar-warning");
+                    $("#passwordProgressBar").css("width", "50%");
+                    break;
+                case 2:
+                    $("#passwordProgressBar").addClass("progress-bar-info");
+                    $("#passwordProgressBar").css("width", "75%");
+                    break;
+                case 3:
+                    $("#passwordProgressBar").addClass("progress-bar-success");
+                    $("#passwordProgressBar").css("width", "100%");
+                    break;
+                default:
+                    $("#passwordProgressBar").addClass("warning");
+                    $("#passwordProgressBar").style.width = "0%";
+            }
+        }
+        return;
+    }
+
+    function sendMessage() {
+        var emailOrPhone = $('input[name="strUserTelephoneOrEmail"]').val();
+        var strKaptcha = $('input[name="strKaptcha"]').val();
+        var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        var reg1 = /^\d{11}$/;
+        if (!reg.test(emailOrPhone) && !reg1.test(emailOrPhone)) {
+            alert("请确认输入的电话或邮箱的合法性");
+        }else if(strKaptcha.length !== 4){
+            alert("确认是否输入的为4位验证码");
+        }else {
+            var kaptcharValid = false;
+            $.ajax({
+                url: "/imgValidControllerDefaultKaptcha",
+                contentType: "text/plain;charset=UTF-8",
+                data: strKaptcha,
+                dataType: "json",
+                type: "post",
+                success: function (message) {
+                    kaptcharValid = message;
+                    if(kaptcharValid){
+                        $("#linkSendMessage").attr('disabled',true);
+                        $.ajax({
+                            url: "/sendMessage",
+                            contentType: "text/plain;charset=UTF-8",
+                            data: emailOrPhone,
+                            dataType: "json",
+                            type: "post",
+                            success: function (message) {
+                                // alert(message);
+                            }
+                        });
+                        $("#kaptchaDiv").hide(500);
+                        var timeSec = 59;
+                        var timeStr = '';
+                        var codeTime = setInterval(function Internal(){
+                            if (timeSec == 0){
+                                $("#linkSendMessage").html("发送验证码");
+                                $("#linkSendMessage").attr('disabled',false);
+                                clearInterval(codeTime);
+                                return;
+                            }
+                            timeStr = ""+timeSec+"再次发送";
+                            $("#linkSendMessage").html(timeStr);
+                            timeSec--;
+                        },1000);
+                    }else{
+                        alert("验证码错误");
+                    }
+                }
+            });
+        }
+    }
+
+    function  verify(){
+        var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        var reg1 = /^\d{11}$/;
+        var emailOrPhone = document.getElementById("strUserTelephoneOrEmail").value;
+        var password = document.getElementById("strUserPassword").value;
+        var code = document.getElementById("strCode").value;
+        if ((reg.test(emailOrPhone) || reg1.test(emailOrPhone)) && password.length > 5 && code.length ===6 && phoneOrEmailValid) {
+            return true;
+        }
+        alert('没看到提示吗？');
+        return false;
+    }
+
+    function telephoneOrEmailValid(telephoneOrEmail) {
+        var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        var reg1 = /^\d{11}$/;
+        if (!reg.test(telephoneOrEmail) && !reg1.test(telephoneOrEmail)) {
+
+        }else{
+            $.ajax({
+                url: "/testTelephoneOrEmailValid",
+                contentType: "text/plain;charset=UTF-8",
+                data: telephoneOrEmail,
+                dataType: "json",
+                type: "post",
+                success: function (message) {
+                    if(message){
+                        phoneOrEmailValid = true;
+                        if ($("#passwordDanger").hasClass("progress-bar-danger")){
+                            $("#passwordDanger").removeClass("progress-bar-danger");
+                        }
+                        $("#helpBlock2").html("");
+                    }else{
+                        if (!($("#passwordDanger").hasClass("progress-bar-danger"))){
+                            $("#passwordDanger").addClass("progress-bar-danger");
+                        }
+                        $("#helpBlock2").html(telephoneOrEmail+"已存在");
+                    }
+                    // alert(message);
+                }
+            });
+        }
+    }
+</script>
+</html>

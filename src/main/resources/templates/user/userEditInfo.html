@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div th:replace="~{commons/bar::topbar}"></div>
+<form th:action="@{'/user/info/edit/'+${userInfo.getIntUserId()}}" method="post">
+<!--    <input type="hidden" name="_method" value="put"/>-->
+    <input type="hidden" name="intUserId" th:value="${userInfo.getIntUserId()}" placeholder="用户id"/><br/>
+    <span>用户昵称</span><input  name="strUserAlias" th:value="${userInfo.getStrUserAlias()}" placeholder="用户昵称"/><br/>
+    <span>用户头像</span><img  height="100px" width="100px" src="url" th:src="${userInfo.getStrUserHeadPortrait()}" alt="盒子"><br/>
+    <span>用户头像url</span><input  type="text" name="strUserHeadPortrait" th:value="${userInfo.getStrUserHeadPortrait()}" placeholder="用户头像url"/><br/>
+    <span>用户性别</span><input  name="intUserSex" th:value="${userInfo.getIntUserSex()}" placeholder="用户性别"/><br/>
+    <span>用户生日</span><input  name="userBirth" th:value="${userInfo.getUserBirth()}"   placeholder="用户生日"/><br/>
+    <span>用户信息</span><input  name="strUserIntro" th:value="${userInfo.getStrUserIntro()}" placeholder="用户信息"/><br/>
+    <span>用户标签</span><input  name="strUserTag" th:value="${userInfo.getStrUserTag()}" placeholder="用户标签"/><br/>
+    <input type="submit" value="保存">
+</form>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div th:replace="~{commons/bar::topbar}"></div>
+<!--    <input type="hidden" name="_method" value="put" th:if="${session.loginUser !=null}"/>-->
+<br/>
+<br/>
+<br/>
+<br/>
+<h1>我的Animebox小组</h1>
+<span>
+    <a th:href="@{'/circle/user/'+${uid}}">小组主页</a>
+    <a th:href="@{'/circle/user/'+${uid}+'/joins'}">加入的小组</a>
+    <a th:href="@{'/circle/user/'+${uid}+'/publish'}">发起</a>
+    <a th:href="@{'/circle/user/'+${uid}+'/reply'}">回应</a>
+    <a th:href="@{'/circle/user/'+${uid}+'/likes'}">喜欢</a>
+</span>
+</body>
+</html>

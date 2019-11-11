@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style>
+        .container {
+            width: 1100px;
+            /*height:2000px;*/
+            /*background-color: red;*/
+            padding: 0px 20px;
+            margin: 10px auto;
+        }
+
+        .container_left {
+            float: left;
+            width: 66%;
+            /*height: 1200px;*/
+            margin: 0px 1%;
+            /*background-color: cornflowerblue;*/
+        }
+
+        .container_right {
+            float: right;
+            width: 30%;
+            /*height: 550px;*/
+            margin-right: 1%;
+            /*background-color: cornflowerblue;*/
+            margin-bottom: 30px;
+            border: 2px solid #f7f7f7;
+            border-radius: 8px;
+            box-shadow: darkgrey 5px 5px 15px 2px ;
+        }
+
+        .container_left_bar {
+            /*background-color: salmon;*/
+            height: 40px;
+            width: 100%;
+            padding: 3px;
+        }
+
+        .container_right_bar {
+            /*background-color: silver;*/
+            width: 100%;
+            padding: 12px 9px;
+            background-color: #f7f7f7;
+        }
+
+        .container_right_context_small_img {
+            width: 56px;
+            height: 71px;
+            margin: 10px 10px 10px 10px;
+            float: left;
+            /*background: brown;*/
+            word-wrap:break-word ;
+            text-align: center;
+        }
+
+        .container_right_context_big_img {
+            width: 56px;
+            height: 111px;
+            margin: 10px 10px 10px 10px;
+            float: left;
+            /*background: brown;*/
+            word-wrap:break-word ;
+            text-align: center;
+        }
+
+        .container_circle_info{
+            padding: 5px;
+            /*background-color: #999999;*/
+            background-color: #f7f7f7;
+            border-radius: 20px;
+        }
+
+        .container_circle_info_context{
+            Overflow:hidden;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .container_circle_info_img{
+            width: 100px;
+            float: left;
+            padding: 10px;
+        }
+
+        .container_circle_info_text{
+            /*background-color: seagreen;*/
+            float: left;
+            width: 570px;
+            padding-left: 10px;
+        }
+
+        .container_circle_info_ex{
+            /*background-color: #b3d7ff;*/
+            Overflow:hidden;
+        }
+
+        .new_topic_container{
+            width: 100%;
+            padding: 5px 5px;
+            /*background-color: rebeccapurple;*/
+            /*background-color: white;*/
+        }
+        .new_topic_area{
+            margin-top: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        #trans_area:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-default" style="padding: 0 200px 0 200px" role="navigation" th:fragment="topbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand disabled">AnimeBox</a>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">主站</a>
+                </li>
+                <li>
+                    <a href="#">动画</a>
+                </li>
+                <li>
+                    <a href="#">圈子</a>
+                </li>
+                <li>
+                    <a href="#">探索</a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <form class="navbar-form navbar-right" role="search">
+                <select class="form-control">
+                    <option>全部</option>
+                    <option>爱好</option>
+                    <option>喜好</option>
+                    <option>兴趣</option>
+                </select>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder=" ">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+                <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="32px"
+                     style="border-radius: 5px 5px 5px 5px;">
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="container_left">
+        <div class="container_left_bar">
+            <span style="font-size: 25px">小组名称</span>
+            <div class="btn-group btn-group-sm" role="group" style="float: right;margin-top: 4px">
+                <button type="button" class="btn btn-info">概览</button>
+                <button type="button" class="btn btn-default">话题</button>
+                <button type="button" class="btn btn-default">成员</button>
+            </div>
+        </div>
+        <hr style="margin: 2px auto;background-color: #fafafa;height: 1px;"/>
+        <div class="container_circle_info">
+            <div class="container_circle_info_context">
+                <div class="container_circle_info_img">
+                    <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="75px"
+                         style="border-radius: 5px 5px 5px 5px;">
+                </div>
+
+                <div class="container_circle_info_text" style="float: left">
+                    又名：CUP人生茶话会<br/>
+                    本茶话会欢迎以下各界人士：<br/>
+                    1.上班的时候想要回家的。<br/>
+                    2.学校课上打瞌睡的。<br/>
+                    3.外表在上班或上课，脑内在high晚上看的XXX的。<br/>
+                    4.上班无法开启聊天工具的。<br/>
+                    5.上班精神寂寞无处排解的。<br/>
+                    6.胸无大志前途漫漫的。<br/>
+                    7.有大把的时间却不知道怎么用的。<br/>
+                    8.所谓理想就只是想想的。<br/>
+                    9.黄花大闺女还愁嫁的。<br/>
+                    10.夜晚靠脑内剧场入睡的。<br/>
+
+                    茶话会内容：<br/>
+                    1.可在茶话会中无意义嚎叫，引起其他成员响应嚎叫。<br/>
+                    2.可在茶话会中吐各种嘈，法律禁止的就吞下去吧。<br/>
+                    3.可在茶话会中转帖各种内容，以便上班学习时偷看的。<br/>
+                    4.可把茶话会当做网络存储，各类需要的东西先放进来以便回家时能马上找到。<br/>
+                    5.可在茶话会中擅自勾搭，但不能构成骚扰。<br/>
+                    6.可在茶话会中讨论各种话题，法律禁止的请自己分裂人格讨论。<br/>
+
+                    茶话会的茶水供应方法：<br/>
+                    咽口水。<br/>
+
+                    茶话会旨归：<br/>
+                    通过“谈谈山海经”“伐伐珊瑚”“无聊嚎叫”“闲言碎语”等方式帮助组员实现个性解放，找到生命中的另一半。<br/>
+                </div>
+            </div>
+            <hr style="margin: 2px auto;background-color: #fafafa;height: 1px;"/>
+            <div class="container_circle_info_ex">
+                <span style="float: left">创建于 2009-10-9 13:25</span>
+                <button style="float: right;padding:1px 10px;" class="btn btn-default btn-sm">加入小组</button>
+            </div>
+        </div>
+        <div class="new_topic_container">
+            <div class="container_circle_info_ex">
+                <h4 style="float: left">小组最新讨论</h4>
+                <button style="float: right;padding:1px 10px;" class="btn btn-default btn-sm">发表新话题</button>
+            </div>
+            <table class="table table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>话题</th>
+                <th>作者</th>
+                <th>回复</th>
+                <th>最后回复</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="#">lcx是什么玩意？？？？？？？？？？？？？</a></th>
+                <td><a href="#">boxer</a> </td>
+                <td>53</td>
+                <td>2019-10-28</td>
+            </tr>
+            </tbody>
+        </table>
+            <a href="#" style="float: right">更多小组讨论>></a>
+        </div>
+        <div class="new_topic_area">
+            <form role="form">
+                <div class="form-group">
+                    <label style="font-size: 20px">快速发帖</label>
+                    <div class="form-group">
+                        <label for="strTopicName" class="col-sm-2 control-label" style="text-align: center;font-size: 120%">标题</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="strTopicName">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 50px;">
+                        <label for="strBBCodeTopicContext" class="col-sm-2 control-label" style="text-align: center;font-size: 120%">正文</label>
+                        <div class="col-sm-10">
+                            <textarea id="strBBCodeTopicContext" class="form-control" style="min-height: 100px;max-height: 500px;" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <hr style="background-color: white;width: 100%;">
+                    <hr style="background-color: darkgray;width: 100%;;margin-top: 10px">
+                    <div class="form-group" style="margin-top: 10px">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-info">提交</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="container_right">
+        <div class="container_right_bar">
+            最近加入
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_small_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+    </div>
+    <div class="container_right">
+        <div class="container_right_bar">
+            最近加入
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">namenamenamenamen</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+        <div class="container_right_context_big_img">
+            <img src="http://img.qqzhi.com/uploads/2018-11-30/130606262.jpg" width="51px"
+                 style="border-radius: 5px 5px 5px 5px;">
+            <a href="#">name</a>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+</script>
+</html>

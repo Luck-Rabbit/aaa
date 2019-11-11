@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .box0 {
+            height: 4100px;
+            width: 1200px;
+            border: 0px solid black;
+            margin: 10px auto;
+        }
+
+        .box01 {
+            height: 3000px;
+            width: 63%;
+            border: 0px solid black;
+            margin: 0 0%;
+            float: left;
+        }
+
+        .box02 {
+            width: 100%;
+            height: 200px;
+            border: 0px solid black;
+            float: left;
+        }
+
+        .box03 {
+            height: 2400px;
+            width: 37%;
+            border: 0px solid black;
+            margin: 0 0%;
+            float: left;
+        }
+
+        .box04 {
+            height: 450px;
+            width: 100%;
+            border: 0px solid black;
+            margin: 0px 0%;
+            float: left;
+        }
+
+        .box05 {
+            height: 80px;
+            width: 50%;
+            border: 0px solid black;
+            margin: 0px 0%;
+            float: left;
+        }
+
+        .box06 {
+            height: 1800px;
+            width: 100%;
+            border: 0px solid black;
+            margin: 0px 0%;
+            float: left;
+        }
+
+        .box07 {
+            width: 100%;
+            height: 80px;
+            border: 0px solid black;
+            margin: 0px 0%;
+            float: left;
+        }
+
+        .box1 {
+            display: flex;
+            flex-direction: column;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            color: #ca6445;
+            background: #fae9da;
+            margin: 10px 0 0 30px;
+        }
+
+        .box2 {
+            margin: -57px 0 0 110px;
+            font-size: 15px;
+            color: rgba(9, 7, 193, 1.00);
+        }
+
+        .box3 {
+            display: flex;
+            flex-direction: column;
+            width: 570px;
+            height: 100px;
+            margin: 10px 0 0 110px;
+            color: #999999;
+            background: #f9f9f9;
+        }
+
+        .box4 {
+            color: #999999;
+            background: #999999;
+            height: 1px;
+            width: 575px
+        }
+
+        a:hover {
+            color: white;
+            background: #6ebfc3;
+            text-decoration: none;
+        }
+
+        .box5 {
+            color: black;
+        }
+
+        .box5:hover {
+            color: #3276ab;
+            background: white;
+        }
+
+        .box6 p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            margin-top: 13px;
+            margin-left: 10px;
+        }
+
+        .box7 {
+            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .box7:hover {
+            border: 1px solid #99cfe8;
+        }
+
+        .box8 {
+            text-align: center;
+        }
+
+        .c1 {
+            font-family: 宋体;
+            font-weight: 900;
+        }
+
+        .c2 {
+            width: 370px;
+            height: 70px;
+            border: 1px solid #ffffff;
+            margin: -55px 0 0 770px;
+            font-size: 30px;
+            font-family: 宋体;
+            background: #ffffff;
+            border-radius: 10px;
+        }
+
+        .c3 {
+            margin: 15px 0 0 10px;
+            font-size: 22px;
+        }
+
+        .c4 {
+            margin-top: 10px;
+        }
+
+        .c5 {
+            margin: 10px 0 0 110px;
+        }
+
+        .c6 {
+            margin: 0 -45px 0 0;
+        }
+
+        .c7 {
+            margin: 10px 0 0 20px;
+        }
+
+        .c8 {
+            font-size: 15px;
+            margin: -50px 0 0 65px;
+        }
+
+        .c9 {
+            font-size: 15px;
+            margin: 10px 0 0 65px;
+        }
+
+        .c10 {
+            margin: 15px 0 10px 20px;
+            font-size: 22px;
+            font-family: 宋体;
+        }
+
+        .c11 {
+            margin: -10px 0 0 0;
+        }
+
+        .c12 {
+            color: #999999;
+            background: #999999;
+            height: 1px;
+            width: 400px
+        }
+
+        .c13 {
+            margin: -10px 0 0 20px;
+        }
+
+        .c14 {
+            margin: -50px 0 0 90px
+        }
+
+        .c15 {
+            margin: 13px 0 0 90px;
+        }
+
+        .c16 {
+            margin: -20px 0 0 180px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{commons/bar::topbar}"></div>
+<div class="box0">
+    <h1 class="c1">&nbsp;讨论精选</h1>
+    <div class="c2">
+        <div class="c3">
+            新成立小组|<a th:href="@{/circle/all}">全部小组</a>
+        </div>
+    </div>
+    <div class="box01">
+        <div class="box02" th:each="topic:${hotTopicPageInfo.getList()}">
+            <div class="box1">
+                <div class="c4">[[${topic.getIntUserLikeCount()}]]<br>喜欢</div>
+            </div>
+            <div class="box2">
+                <a th:href="@{'/topic/'+${topic.getIntTopicId()}}">[[${topic.getStrTopicName()}]]</a>
+            </div>
+            <div class="box3">
+                <div class="box6">
+                    <p>[[${topic.getStrTopicContent()}]]</p>
+                </div>
+            </div>
+            <div class="c5">
+                来自<a th:href="@{'/user/info/'+${topic.getIntTopicHeadmanId()}}">
+                [[${topic.getStrUserAlias()}]]e
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${topic.getTopicCreateTime()}]]
+            </div>
+            <div class="c6">
+                <hr class="box4">
+            </div>
+        </div>
+    </div>
+    <div class="box03">
+        <div class="box04">
+            <div class="box05" th:each="circle:${newCircles}">
+                <div class="c7">
+                    <a th:href="@{'/circle/'+${circle.getIntCircleId()}}">
+                        <img th:src="${circle.getStrCircleImgUrl()}" class="box7">
+                    </a>
+                    <div class="c8">
+                        <a th:href="@{'/circle/'+${circle.getIntCircleId()}}" class="box5">[[${circle.getStrCircleName()}]]</a>
+                    </div>
+                    <div class="c9">[[${circle.getStrCircleUserCount()}]]位成员</div>
+                </div>
+            </div>
+        </div>
+        <div class="box06">
+            <div class="c10">
+                值得加入的小组
+            </div>
+            <div class="box07" th:each="circle:${hotCircles}">
+                <div class="c11">
+                    <hr class="c12">
+                </div>
+                <div class="c13">
+                    <a href="#">
+                        <img th:src="${circle.getStrCircleImgUrl()}" class="box7">
+                    </a>
+                </div>
+                <div class="c14">
+                    <a th:href="@{'/circle/'+${circle.getIntCircleId()}}">[[${circle.getStrCircleName()}]]</a>
+                </div>
+                <div class="c15">
+                    [[${circle.getStrCircleUserCount()}]]个盒子
+                </div>
+                <div class="c16">
+                    <a th:id="${'a'+circle.getIntCircleId()}"
+                       th:onclick="'addCircle('+${circle.getIntCircleId()}+','+(${session.loginUser!=null}?${session.loginUser.getIntUserId()} : '-1')+')'">+加入圈子</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box8">
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            <li class="page-item">
+                <a class="page-link" th:href="@{'/circle/explore?pageNum=0'}">首页</a>
+            </li>
+            <li th:class="${(i+(-1))==hotTopicPageInfo.pageNum}? 'page-item active' : 'page-item'"
+                th:each="i : ${#numbers.sequence(hotTopicPageInfo.getNavigateFirstPage(),hotTopicPageInfo.getNavigateLastPage())}">
+                <a class="page-link" th:href="@{'/circle/explore?pageNum='+${i+(-1)}}">
+                    [[${i}]]
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="@{'/circle/explore?pageNum='+${hotTopicPageInfo.getPages()}}">尾页</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script>
+    function addCircle(circleId, userId) {
+        if (userId == -1) {
+            alert("请先登录");
+        } else {
+            $.ajax({
+                url: "/circleAddUser",
+                contentType: "application/json;charset=UTF-8",
+                data: '{"intCircleId":' + circleId + ',"intUserId":' + userId + '}',
+                dataType: "json",
+                type: "post",
+                success: function (message) {
+                    if (message == true) {
+                        $("#a" + circleId).removeAttr("onclick");
+                        $("#a" + circleId).text("加入成功");
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

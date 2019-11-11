@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div th:replace="~{commons/bar::topbar}"></div>
+<!--    <input type="hidden" name="_method" value="put" th:if="${session.loginUser !=null}"/>-->
+<br/>
+<br/>
+<br/>
+<br/>
+<span>话题id</span><input name="intCircleId"   readonly th:value="${topic.getIntTopicId()}" placeholder="圈子id"/><br/>
+<span>话题名称</span><input readonly name="strCircleName" th:value="${topic.getStrTopicName()}" placeholder="圈子名称"/><br/>
+<span>话题内容</span><input readonly name="strCircleContent" th:value="${topic.getStrTopicContent()}" alt="圈子内容"><br/>
+<span>话题回复数</span><input readonly name="strCircleUserCount" th:value="${topic.getIntTopicReplyCount()}" placeholder="话题回复数"/><br/>
+<span>创建话题用户名字</span><a th:href="@{'/user/info/'+${topic.getIntTopicHeadmanId()}}">[[${topic.getStrUserAlias()}]]</a> <br/>
+<span>话题创建时间</span><input readonly name="circleCreateTime" th:value="${topic.getTopicCreateTime()}" placeholder="圈子创建时间"/><br/>
+<a id="like" th:onclick="'userLike('+${topic.getIntTopicId()}+','+(${session.loginUser!=null}?${session.loginUser.getIntUserId()} : '-1')+',0)'">Like</a>
+
+<form>
+</form>
+
+<!--<a th:href="@{'/user/info/edit/'+${circle.getIntUserId()}}" th:if="${session.loginUser!=null && session.loginUser.getIntUserId() == circle.getIntUserId()}">去修改</a>-->
+<script>
+    function userLike(intTopicId, intUserId, intUserLike) {
+        if(intUserId == -1){
+            alert("请先登录");
+        }else{
+            $.ajax({
+                url: "/userLikeTopic",
+                contentType: "application/json;charset=UTF-8",
+                data: '{"intTopicId":' + intTopicId + ',"intUserId":' + intUserId + ',"intUserLike":'+intUserLike+'}',
+                dataType: "json",
+                type: "post",
+                success: function (message) {
+                    if (message == true) {
+                        $("#like").text("Liked");
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+
+</html>

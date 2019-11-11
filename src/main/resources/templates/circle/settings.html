@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/asserts/css/navbar.css}">
+    <style>
+        .container {
+            /*background-color: red;*/
+            margin-left: 300px;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{commons/bar::topbar}"></div>
+<div class="container">
+    <div class="container_bar">
+        <span style="font-size: 25px">[[${circle.getStrCircleName()}]]</span>
+        <div class="btn-group btn-group-sm" role="group" style="float: right;margin-top: 4px">
+            <button type="button" class="btn btn-default" th:onclick="'window.open(\'/circle/'+${circle.getIntCircleId()}+'\',\'_self\')'">概览</button>
+            <button type="button" class="btn btn-default" th:onclick="'window.open(\'/circle/'+${circle.getIntCircleId()}+'/forum\',\'_self\')'" >话题</button>
+            <button type="button" class="btn btn-default" th:onclick="'window.open(\'/circle/'+${circle.getIntCircleId()}+'/members\',\'_self\')'" >成员</button>
+            <button type="button" class="btn btn-info"
+                    th:onclick="'window.open(\'/circle/'+${circle.getIntCircleHeadmanId()}+'/settings\',\'_self\')'">设置
+            </button>
+        </div>
+    </div>
+    <hr style="margin: 2px auto;background-color: #fafafa;height: 1px;"/>
+    <div class="new_topic_area" th:if="${session.loginUser!=null}">
+        <form th:action="@{'/circle/${circle.getIntCircleHeadmanId()}/settings'}" method="post" role="form">
+            <input hidden="hidden" type="text" id="intCircleId" name="intCircleId"
+                   th:value="${circle.getIntCircleId()}">
+            <input hidden="hidden" type="text" id="intCircleHeadmanId" name="intCircleHeadmanId"
+                   th:value="${circle.getIntCircleHeadmanId()}">
+            <div class="form-group ">
+                <label style="font-size: 20px">[[${circle.getStrCircleName()}]]的设置</label>
+                <div class="form-group">
+                    <label for="strCircleName" class="col-sm-2 control-label"
+                           style="text-align: center;font-size: 100%">圈子名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="strCircleName" id="strCircleName" maxlength="28"
+                               th:value="${circle.getStrCircleName()}">
+                    </div>
+                </div>
+                <hr style="width: 1%;">
+                <hr style="background-color: darkgray;width: 100%;;margin-top: 10px">
+                <div class="form-group">
+                    <label for="strCircleImgUrl" class="col-sm-2 control-label"
+                           style="text-align: center;font-size: 100%">圈子头像</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="strCircleImgUrl" id="strCircleImgUrl"
+                               maxlength="28" th:value="${circle.getStrCircleImgUrl()}">
+                    </div>
+                </div>
+                <hr style="width: 1%;">
+                <hr style="background-color: darkgray;width: 100%;;margin-top: 10px">
+                <div class="form-group">
+                    <label for="intCircleTag" class="col-sm-2 control-label" style="text-align: center;font-size: 100%">圈子标签</label>
+                    <div class="col-sm-10">
+                        <div class="btn-group" style="float: right">
+                            <button id="tagButton" name="tagButton" type="button"
+                                    class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                标签 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li style="background-color: #d6d8db">二次元</li>
+                                <li><a onclick="transTag(this,1)">声优</a></li>
+                                <li><a onclick="transTag(this,2)">监督</a></li>
+                                <li><a onclick="transTag(this,3)">画师</a></li>
+                                <li><a onclick="transTag(this,4)">番组</a></li>
+                                <li><a onclick="transTag(this,5)">同人</a></li>
+                                <li><a onclick="transTag(this,6)">其他</a></li>
+                                <li style="background-color: #d6d8db">游戏</li>
+                                <li><a onclick="transTag(this,7)">主机</a></li>
+                                <li><a onclick="transTag(this,8)">厂商</a></li>
+                                <li><a onclick="transTag(this,9)">系列</a></li>
+                                <li><a onclick="transTag(this,10)">其他</a></li>
+                                <li style="background-color: #d6d8db">技术</li>
+                                <li><a onclick="transTag(this,11)">互联网</a></li>
+                                <li><a onclick="transTag(this,12)">编程与软件</a></li>
+                                <li><a onclick="transTag(this,13)">数码产品</a></li>
+                                <li><a onclick="transTag(this,14)">电脑硬件技术</a></li>
+                                <li><a onclick="transTag(this,15)">其他</a></li>
+                                <li style="background-color: #d6d8db">生活</li>
+                                <li><a onclick="transTag(this,16)">闲聊</a></li>
+                                <li><a onclick="transTag(this,17)">地域</a></li>
+                                <li><a onclick="transTag(this,18)">其他</a></li>
+                                <li style="background-color: #d6d8db">其他</li>
+                                <li><a onclick="transTag(this,19)">其他</a></li>
+                            </ul>
+                            <input hidden="hidden" name="intCircleTag" id="intCircleTag" maxlength="20" th:value="${circle.getIntCircleTag()}">
+                        </div>
+                        <!--                        <input type="text" class="form-control" name="strCircleTag" id="strCircleTag" maxlength="28" th:value="${circle.getStrCircleTag()}">-->
+                    </div>
+                </div>
+                <hr style="width: 1%;">
+                <hr style="background-color: darkgray;width: 100%;;margin-top: 10px">
+                <div class="form-group" style="margin-top: 50px;">
+                    <label for="strCircleContent" class="col-sm-2 control-label"
+                           style="text-align: center;font-size: 100%">正文</label>
+                    <div class="col-sm-10">
+                        <textarea id="strCircleContent" name="strCircleContent" class="form-control"
+                                  style="min-height: 100px;max-height: 500px;" rows="5">[[${circle.getStrCircleContent()}]]</textarea>
+                    </div>
+                </div>
+                <hr style="width: 1%;">
+                <hr style="background-color: darkgray;width: 100%;;margin-top: 10px">
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-info">更新小组设置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function transTag(aTag, id) {
+        $("#intCircleTag").val(id);
+        $("#tagButton").html($(aTag).text() + " <span class=\"caret\"></span>");
+    }
+</script>
+</body>
+</html>
